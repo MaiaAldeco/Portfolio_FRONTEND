@@ -1,0 +1,16 @@
+
+section{
+         /*  IE 10 y Firefox 10 en adelante */
+    background: linear-gradient(to left top, #03A5C6, #014887);
+    /* Opera and browser based in webkit */
+    background: -prefix-linear-gradient(left top, #03A5C6, #014887);
+} 
+
+
+/* .gradient-custom{
+    background-color: black;
+    background: -webkit-linear-gradient(to right, rgba(106, 17, 203, 1), rgba(37, 117, 252, 1));
+
+    
+    background: linear-gradient(to right, rgba(106, 17, 203, 1), rgba(37, 117, 252, 1))
+} */

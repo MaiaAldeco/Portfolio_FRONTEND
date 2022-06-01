@@ -1,0 +1,179 @@
+<app-navbar></app-navbar>
+<section class="ftco-section scroll-reveal" id="contact" [ngsReveal]="config1reveal">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6 text-center mb-5">
+                <h2 class="heading-section ">Contáctame</h2>
+                <div *ngFor="let contacto of contactos">
+                    <button *ngIf="isLogged" (click)="openDetails(contentDetails, contacto)" class="btn btn-md btn-info">
+                        <fa-icon [icon]="faSearch" transform="shrink-0 left-4"></fa-icon>Details
+                    </button>
+                    <button *ngIf="isLogged && isAdmin" (click)="openEdit(contentEdit, contacto)" class="btn btn-md btn-warning">
+                        <fa-icon [icon]="faPenToSquare" transform="shrink-0 left-4"></fa-icon>Edit
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center" *ngFor="let contacto of contactos">
+            <div class="col-lg-10 col-md-12">
+                <div class="wrapper">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-8 mb-5">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="dbox w-100 text-center">
+                                        <div class="icon d-flex align-items-center justify-content-center">
+                                            <span>
+                                                <fa-icon [icon]="faLocationDot"></fa-icon>
+                                            </span>
+                                        </div>
+                                        <div class="text">
+                                            <p><span>Localidad:</span>{{contacto.localidad}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="dbox w-100 text-center">
+                                        <div class="icon d-flex align-items-center justify-content-center">
+                                            <span>
+                                                <fa-icon [icon]="faPhone"></fa-icon>
+                                            </span>
+                                        </div>
+                                        <div class="text">
+                                            <p><span>Phone:</span> <a
+                                                    href="tel://{{contacto.telefono}}">{{contacto.telefono}}</a></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="dbox w-100 text-center">
+                                        <div class="icon d-flex align-items-center justify-content-center">
+                                            <span>
+                                                <fa-icon [icon]="faPaperPlane"></fa-icon>
+                                            </span>
+                                        </div>
+                                        <div class="text">
+                                            <p><span>Email:</span> <a
+                                                    href="mailto:{{contacto.email}}">{{contacto.email}}</a></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-8">
+                            <div class="contact-wrap">
+                                <form method="POST" id="contactForm" name="contactForm" class="contactForm">
+                                    <div class="row ">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <input type="text" class="form-control form-control-contact" name="name" id="name"
+                                                    placeholder="Name">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <input type="email" class="form-control form-control-contact" name="email" id="email"
+                                                    placeholder="Email">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <input type="text" class="form-control form-control-contact" name="subject" id="subject"
+                                                    placeholder="Subject">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <textarea name="message" class="form-control form-control-contact" id="message" cols="30"
+                                                    rows="8" placeholder="Message"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <input type="submit" value="Send Message" class="asd btn btn-primary">
+                                                <div class="submitting"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- ---------------------------------------- DETAILS --------------------------------------------------- -->
+<ng-template #contentDetails let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Ver Contacto</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form>
+            <div class="form-group">
+                <label>Localidad</label>
+                <div class="input-group">
+                    <input id="localidadContact" name="localidadContact" class="form-control" readonly>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Teléfono</label>
+                <div class="input-group">
+                    <input id="telefonoContact" name="telefonoContact" class="form-control" readonly>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Email</label>
+                <div class="input-group">
+                    <input id="emailContact" name="emailContact" class="form-control" readonly>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-danger" (click)="modal.close('Save click')">Close</button>
+    </div>
+</ng-template>
+<!-- ---------------------------------------- UPDATE --------------------------------------------------- -->
+<ng-template #contentEdit let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Actualizar Contacto</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form [formGroup]="editForm" novalidate>
+            <div class="form-group">
+                <label for="nombre">Id</label>
+                <div class="input-group">
+                    <input type="text" formControlName="id" class="form-control" required readonly>
+                </div>
+                <label for="localidad">Localidad</label>
+                <div class="input-group">
+                    <input type="text" formControlName="localidad" class="form-control" required>
+                </div>
+                <label for="telefono">Teléfono</label>
+                <div class="input-group">
+                    <input type="text" formControlName="telefono" class="form-control" required>
+                </div>
+                <label for="email">Email</label>
+                <div class="input-group">
+                    <input type="text" formControlName="email" class="form-control" required>
+                </div>
+            </div>
+            <div class="border text-center">
+                <button (click)="onSave()" data-dismiss="modal" class="btnEdit">Guardar</button>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-danger" (click)="modal.close('Save click')">Close</button>
+    </div>
+</ng-template>

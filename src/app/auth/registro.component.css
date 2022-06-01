@@ -1,0 +1,7 @@
+
+section{
+    /*  IE 10 y Firefox 10 en adelante */
+background: linear-gradient(to left top, #03A5C6, #014887);
+/* Opera and browser based in webkit */
+background: -prefix-linear-gradient(left top, #03A5C6, #014887);
+} 

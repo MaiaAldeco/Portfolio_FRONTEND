@@ -1,0 +1,202 @@
+<app-navbar></app-navbar>
+<section class="home" id="home" ngsReveal>
+    <div class="content" *ngFor="let persona of personas">
+        <ngx-typed-js stringsElement=persona.tecnologia [shuffle]="false" [typeSpeed]="10" [startDelay]="1000" [backSpeed]="200"
+            [smartBackspace]="true" [backDelay]="40" [loop]="true" [showCursor]="false">
+            <h3>{{persona.nombre}} {{persona.apellido}} <br> {{persona.stack}} <span
+                    class="typing typed">{{persona.tecnologia}}</span> Developer</h3>
+        </ngx-typed-js>
+        <div><button *ngIf="isLogged" class="btn btn-md btn-info" (click)="openDetails(contentDetails, persona)">
+                <fa-icon [icon]="faSearch" transform="shrink-0 left-4"></fa-icon>Details
+            </button>
+            <button  *ngIf="isLogged && isAdmin" (click)="openEdit(contentEdit, persona)" class="btn btn-md btn-warning">
+                <fa-icon [icon]="faPenToSquare" transform="shrink-0 left-4"></fa-icon>Edit
+            </button>
+            <button *ngIf="isLogged && isAdmin" (click)="openDelete(contentDelete, persona)" class="btn btn-md btn-danger">
+                <fa-icon [icon]="faTrash" transform="shrink-0 left-4"></fa-icon>Delete
+            </button>
+        </div>
+    </div>
+</section>
+
+<section class="custom-section space " id="about" [ngsReveal]="config1reveal">
+    <button *ngIf="isLogged && isAdmin" class="btn btn-md btn-outline-primary" (click)="open(content)">
+        <fa-icon [icon]="faUser" transform="shrink-0 left-4"></fa-icon>New User
+    </button>
+    <h1 class="heading"> <span>SOBRE</span> MI </h1>
+    
+    <div class="row">
+        <div class="profile-pic ">
+            <img class="img-fluid rounded-circle shadow-sm" src="../../assets/yo.jpg" alt="">
+        </div>
+        <div class="cb">
+            <div class="card-body" *ngFor="let persona of personas">
+                <p class="card-text">{{persona.descripcion}}
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- ---------------------------------------- ADD NEW --------------------------------------------------- -->
+<ng-template #content let-modal>
+    <div class="modal-header">
+        
+        <h4 class="modal-title" id="modal-basic-title">Nuevo Usuario</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form #f="ngForm" (ngSubmit)="onSubmit(f)">
+            <div class="form-group">
+                <label for="nombre">Nombre</label>
+                <div class="input-group">
+                    <input type="text" id="nombre" name="nombre" class="form-control" required ngModel>
+                </div>
+                <label for="apellido">Apellido</label>
+                <div class="input-group">
+                    <input type="text" id="apellido" name="apellido" class="form-control" required ngModel>
+                </div>
+                <label for="stack">Stack</label>
+                <div class="input-group">
+                    <input type="text" id="stack" name="stack" class="form-control" required ngModel>
+                </div>
+                <label for="tecnologia">Tecnología</label>
+                <div class="input-group">
+                    <input type="text" id="tecnologia" name="tecnologia" class="form-control" required ngModel>
+                </div>
+                <label for="descripcion">Descripción</label>
+                <div class="input-group">
+                    <input type="text" id="descripcion" name="descripcion" class="form-control" required ngModel>
+                </div>
+                <label for="localidad">Localidad</label>
+                <div class="input-group">
+                    <input type="text" id="localidad" name="localidad" class="form-control" required ngModel>
+                </div>
+                <label for="telefono">Teléfono</label>
+                <div class="input-group">
+                    <input type="text" id="telefono" name="telefono" class="form-control" required ngModel>
+                </div>
+                <label for="email">Email</label>
+                <div class="input-group">
+                    <input type="text" id="email" name="email" class="form-control" required ngModel>
+                </div>
+            </div>
+            <div class="border text-center">
+                <button data-dismiss="modal" class="btnContent">Guardar</button>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-danger" (click)="modal.close('Save click')">Close</button>
+    </div>
+</ng-template>
+<!-- ---------------------------------------- DETAILS --------------------------------------------------- -->
+<ng-template #contentDetails let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Ver Usuario</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form>
+            <div class="form-group">
+                <label>Nombre</label>
+                <div class="input-group">
+                    <input id="firstname" name="firstname" class="form-control" readonly>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Apellido</label>
+                <div class="input-group">
+                    <input id="lastname" name="lastname" class="form-control" readonly>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Stack</label>
+                <div class="input-group">
+                    <input id="stck" name="stck" class="form-control" readonly>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Tecnología</label>
+                <div class="input-group">
+                    <input id="tec" name="tec" class="form-control" readonly>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Descripción</label>
+                <div class="input-group">
+                    <input id="desc" name="desc" class="form-control" readonly>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-danger" (click)="modal.close('Save click')">Close</button>
+    </div>
+</ng-template>
+<!-- ---------------------------------------- UPDATE --------------------------------------------------- -->
+<ng-template #contentEdit let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Actualizar Usuario</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form [formGroup]="editForm">
+            <div class="form-group">
+                <label for="nombre">Id</label>
+                <div class="input-group">
+                    <input type="text" formControlName="id" class="form-control" required readonly>
+                </div>
+                <label for="nombre">Nombre</label>
+                <div class="input-group">
+                    <input type="text" formControlName="nombre" class="form-control" required>
+                </div>
+                <label for="apellido">Apellido</label>
+                <div class="input-group">
+                    <input type="text" formControlName="apellido" class="form-control" required>
+                </div>
+                <label for="stack">Stack</label>
+                <div class="input-group">
+                    <input type="text" formControlName="stack" class="form-control" required>
+                </div>
+                <label for="tecnologia">Tecnología</label>
+                <div class="input-group">
+                    <input type="text" formControlName="tecnologia" class="form-control" required>
+                </div>
+                <label for="descripcion">Descripción</label>
+                <div class="input-group">
+                    <input type="text" formControlName="descripcion" class="form-control" required>
+                </div>
+            </div>
+            <div class="border text-center">
+                <button (click)="onSave()" data-dismiss="modal" class="btnContent">Guardar</button>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-danger" (click)="modal.close('Save click')">Close</button>
+    </div>
+</ng-template>
+<!-- ---------------------------------------- DELETE --------------------------------------------------- -->
+<ng-template #contentDelete let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title">Eliminar Usuario</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <h2>Se eliminará a la persona y todos sus registros. Desea continuar?</h2>
+        <div class="border text-center">
+            <button (click)="onDelete()" data-dismiss="modal" class="btn btn-danger">Eliminar Usuario</button>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-dark" (click)="modal.close('Save click')">Close</button>
+    </div>
+</ng-template>

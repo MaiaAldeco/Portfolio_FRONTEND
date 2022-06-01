@@ -1,0 +1,166 @@
+<app-navbar></app-navbar>
+<section class="menu" id="projects" [ngsReveal]="config1reveal">
+    <h1 class="heading mt-md-4 py-5"> <span>trabajos</span> realizados </h1>
+    <button *ngIf="isLogged && isAdmin" class="btn btn-md btn-outline-primary" (click)="open(content)">
+        <fa-icon [icon]="faUser" transform="shrink-0 left-4"></fa-icon>New Skill
+    </button>
+    <div class="box-container ">
+        <div class="row  row-cols-1 row-cols-md-3 g-4 ">
+            <div class="col  " *ngFor="let trabajo of trabajos">
+                <div class="card ">
+                    <img src="{{trabajo.imagen}}" class="card-img-top img-fluid " alt="...">
+                </div>
+                <div class="card-body box">
+                    <div class="icons">
+                        <fa-icon *ngIf="isLogged" (click)="openDetails(contentDetails, trabajo)" style="color:#0DCAF0; cursor:pointer"
+                        [icon]="faSearch" class="fa-sm fa-fw" transform="shrink-0 left-4"></fa-icon>
+                        <fa-icon *ngIf="isLogged && isAdmin" (click)="openEdit(contentEdit, trabajo)" style="color:#F5B907; cursor:pointer"
+                        [icon]="faPenToSquare" class="fa-sm fa-fw"></fa-icon>
+                        <fa-icon *ngIf="isLogged && isAdmin" (click)="openDelete(contentDelete, trabajo)" style="color:#C02E3C; cursor:pointer" [icon]="faTrash"
+                        transform="shrink-0 right-4" class="fa-sm"></fa-icon>
+                    </div>
+                    <h5 class="card-title">{{trabajo.titulo}}</h5>
+                    <p class="card-text">{{trabajo.descripcion}}?</p>
+                    <a href="{{trabajo.linkTrabajo}}" class="btnContent">View</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- ---------------------------------------- ADD NEW --------------------------------------------------- -->
+<ng-template #content let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Nuevo Proyecto</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form #f="ngForm" (ngSubmit)="onSubmit(f)" novalidate>
+            <div class="form-group">
+                <label for="titulo">Nombre</label>
+                <div class="input-group">
+                    <input id="titulo" name="titulo" class="form-control" required ngModel>
+                </div>
+                <label for="descripcion">Descripción</label>
+                <div class="input-group">
+                    <input id="descripcion" name="descripcion" class="form-control" required ngModel>
+                </div>
+                <label for="linkTrabajo">Link</label>
+                <div class="input-group">
+                    <input id="linkTrabajo" name="linkTrabajo" class="form-control" required ngModel>
+                </div>
+                <label for="imagen">Imagen</label>
+                <div class="input-group">
+                    <input id="imagen" name="imagen" class="form-control" required ngModel>
+                </div>
+            </div>
+            <div class="border text-center">
+                <button data-dismiss="modal" class="btnContent">Guardar</button>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-danger" (click)="modal.close('Save click')">Close</button>
+    </div>
+</ng-template>
+<!-- ---------------------------------------- DETAILS --------------------------------------------------- -->
+<ng-template #contentDetails let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Ver Proyecto</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form>
+            <div class="form-group">
+                <label>Nombre</label>
+                <div class="input-group">
+                    <input id="nameProyect" name="nameProyect" class="form-control" readonly>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Descripción</label>
+                <div class="input-group">
+                    <input id="descProyect" name="descProyect" class="form-control" readonly>
+                </div>
+                <div class="form-group">
+                    <label>Link</label>
+                    <div class="input-group">
+                        <input id="linkTrabajo" name="linkTrabajo" class="form-control" readonly>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Imagen</label>
+                    <div class="input-group">
+                        <input id="imagen" name="imagen" class="form-control" readonly>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-danger" (click)="modal.close('Save click')">Close</button>
+    </div>
+</ng-template>
+<!-- ---------------------------------------- UPDATE --------------------------------------------------- -->
+<ng-template #contentEdit let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Actualizar Habilidad</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form [formGroup]="editForm" novalidate>
+            <div class="form-group">
+                <label for="nombre">Id</label>
+                <div class="input-group">
+                    <input type="text" formControlName="id" class="form-control" required readonly>
+                </div>
+                <label for="titulo">Nombre</label>
+                <div class="input-group">
+                    <input type="text" formControlName="titulo" class="form-control" required>
+                </div>
+                <label for="descripcion">Descripción</label>
+                <div class="input-group">
+                    <input type="text" formControlName="descripcion" class="form-control" required>
+                </div>
+                <label for="linkTrabajo">Link</label>
+                <div class="input-group">
+                    <input type="text" formControlName="linkTrabajo" class="form-control" required>
+                </div>
+                <label for="imagen">Imagen</label>
+                <div class="input-group">
+                    <input type="text" formControlName="imagen" class="form-control" required>
+                </div>
+            </div>
+            
+            <div class="border text-center">
+                <button (click)="onSave()" data-dismiss="modal" class="btnContent">Guardar</button>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-danger" (click)="modal.close('Save click')">Close</button>
+    </div>
+</ng-template>
+<!-- ---------------------------------------- DELETE --------------------------------------------------- -->
+<ng-template #contentDelete let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title">Eliminar Usuario</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <h2>Los datos no se podrán recuperar. Desea continuar?</h2>
+      <div class="border text-center"> 
+        <button (click)="onDelete()" data-dismiss="modal" class="btn btn-danger">Eliminar Usuario</button> 
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-dark" (click)="modal.close('Save click')">Close</button>
+    </div>
+  </ng-template>

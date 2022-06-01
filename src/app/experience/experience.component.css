@@ -1,0 +1,51 @@
+.space {
+    padding-top: 50px;
+}
+
+.exp-text {
+    text-align: center;
+    color: #fff;
+    font-size: 3rem;
+    text-transform: uppercase;
+}
+
+.col-md-5 .exp-text {
+    border: 2px solid var(--main-color);
+    padding: 10px;
+}
+
+.li-text {
+    color: #ccc;
+    font-weight: lighter;
+    font-size: 1.6rem;
+    line-height: 45px;
+}
+
+.btnContent {
+
+    margin-top: 1rem;
+    display: inline-block;
+    padding: 0.9rem 3rem;
+    font-size: 1rem;
+    color: #fff;
+    background: var(--main-color);
+    cursor: pointer;
+}
+
+.btnContent:hover {
+    letter-spacing: .2rem;
+}
+
+.border {
+    padding: 10px;
+}
+
+.btn {
+    margin-right: 10px;
+    color: #fff;
+    margin-bottom: 10px;
+}
+
+.fa {
+    margin-right: 10px;
+}

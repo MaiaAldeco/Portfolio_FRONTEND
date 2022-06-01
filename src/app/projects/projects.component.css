@@ -1,0 +1,80 @@
+.card-body{
+    background-color: var(--black);
+}
+
+.card{
+    border: 5px solid var(--black);
+    min-height:300px;
+
+ @media (max-width: 768px) {
+  min-height:250px;
+}
+
+@media (max-width: 420px) {
+  min-height:200px;
+}
+}
+
+h5.card-title{
+    color:#fff
+}
+
+p.card-text{
+    color: #ccc;
+}
+
+.btnContent {
+    margin-top: 1rem;
+    display: inline-block;
+    padding: 0.9rem 3rem;
+    font-size: 1rem;
+    color: #fff;
+    background: var(--main-color);
+    cursor: pointer;
+
+}
+.btnContent:hover{
+    letter-spacing: .2rem;
+}
+
+.menu .box{
+    padding:5rem;
+    text-align: center;
+}
+
+.menu .box h3{
+    color: #fff;
+    font-size: 2rem;
+    padding:1rem 0;
+}
+
+.menu .box {
+    color: #fff;
+    font-size: 1.6rem;
+    padding:.5rem 0;
+    font-weight: lighter;
+}
+
+
+.menu .box:hover{
+    background:#fff;
+}
+
+.menu .box:hover > *{
+    color:var(--black);
+}
+
+.card-img-top:hover{
+    transform: scale(1.02);
+}
+
+.border {
+    padding: 10px;
+}
+
+.btn {
+    margin-right: 10px;
+    color: #fff;
+    margin-bottom: 10px;
+    margin-left: 5px;
+}

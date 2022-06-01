@@ -1,0 +1,72 @@
+
+<nav class="navbar navbar-expand-lg navbar-dark ">
+    <div class="container-fluid">
+        <a class="navbar-brand"><img
+                src="https://aonyi.notion.site/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F9d6bc111-5f99-4aed-96af-1052055ccbbd%2FArgentinaPrograma_(2).png?table=collection&id=8fe8f002-6a9d-4788-b2d3-414d192c644e&spaceId=2787d980-f6c1-4fb9-9274-23694d6120b3&width=40&userId=&cache=v2"
+                alt="Full Stack Developer" width="35" class="d-inline-block align-text-top">
+            Argentina Programa</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+            data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+            aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse mx-auto" id="navbarSupportedContent">
+            <ul class="navbar-nav mx-auto">
+                <li class="nav-item ">
+                    <a class="nav-link about" routerLink="/">Home</a>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link experience" routerLink="/experience">Experience</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link skills" routerLink="/skills">Skills</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link projects" routerLink="/projects">Projects</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link contact" routerLink="/contact">Contact</a>
+                </li>
+            </ul>
+            <div>
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" target="_blank" href="https://www.facebook.com">
+                            <img class="icono"
+                                src="https://cdn1.iconfinder.com/data/icons/logotypes/32/square-facebook-256.png"
+                                alt="Facebook" width="30">
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" target="_blank" href="https://www.instagram.com/mai.ldco">
+                            <img class="icono"
+                                src="https://cdn2.iconfinder.com/data/icons/social-icons-33/128/Instagram-256.png"
+                                alt="Instagram" width="30">
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" target="_blank" href="#">
+                            <img class="icono"
+                                src="https://cdn2.iconfinder.com/data/icons/social-media-2285/512/1_Linkedin_unofficial_colored_svg-256.png"
+                                alt="Linkedin" width="30">
+                        </a>
+                    </li>
+                    <li class="nav-item" *ngIf="!isLogged">
+                        <a class="nav-link" routerLink="/login">
+                            <img class="icono"
+                                src="https://cdn1.iconfinder.com/data/icons/unicons-line-vol-5/24/sign-in-alt-512.png"
+                                alt="signin" width="30">
+                        </a>
+                    </li>
+                    <li class="nav-item" *ngIf="isLogged" (click)="onLogOut()">
+                        <a class="nav-link" style="cursor:pointer">
+                            <img class="icono"
+                                src="https://cdn1.iconfinder.com/data/icons/unicons-line-vol-5/24/sign-out-alt-256.png"
+                                alt="signout" width="30">
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</nav>

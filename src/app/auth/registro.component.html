@@ -1,0 +1,45 @@
+<app-navbar></app-navbar>
+<section>
+    <div class="container">
+        <div class="row d-flex py-5 mt-md-5 justify-content-center align-items-center">
+            <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+                <div class="card bg-dark text-white" style="border-radius: 1rem;">
+                    <div class="card-body p-5 text-center">
+                        <div class="mb-md-5 mt-md-4 pb-5">
+                            <h2 class="fw-bold mb-2 text-uppercase">Registro</h2>
+                            <p class="text-white-50 mb-5">Ingresa tus datos para registrarte</p>
+                            <form #f="ngForm" (ngSubmit)="onRegister()" novalidate>
+                                <div class="form-outline form-white mb-4">
+                                    <label class="form-label" for="nombre">Nombre</label>
+                                    <input type="text" name="nombre" id="nombre" id="nombre"
+                                        class="form-control form-control-lg" [(ngModel)]="nombre" required>
+                                </div>
+                                <div class="form-outline form-white mb-4">
+                                    <label class="form-label" for="nombreUsuario">Nombre Usuario</label>
+                                    <input type="text" name="nombreUsuario" id="nombreUsuario" id="nombreUsuario"
+                                        class="form-control form-control-lg" [(ngModel)]="nombreUsuario" required>
+                                </div>
+                                <div class="form-outline form-white mb-4">
+                                    <label class="form-label" for="password">Password</label>
+                                    <input type="password" name="password" id="password"
+                                        class="form-control form-control-lg" [(ngModel)]="password" required>
+                                </div>
+                                <div class="form-outline form-white mb-4">
+                                    <label class="form-label" for="email">Email</label>
+                                    <input type="email" name="email" id="email" class="form-control form-control-lg"
+                                        [(ngModel)]="email" required>
+                                </div>
+                                <button class="btn btn-outline-light btn-lg px-5" [disabled]="!f.valid"
+                                    type="submit">Registrarse</button>
+                            </form>
+                        </div>
+                        <div>
+                            <p class="mb-0">Ya tienes una cuenta? <a routerLink="/login"
+                                    class="text-white-50 fw-bold">Inicia Sesión</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,19 @@
+.icono {
+    transition: transform .2s; /* Animation */
+  }
+  
+.icono:hover {
+    transform: scale(1.5); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+  }
+
+.navbar{
+    background-color: var(--bgcolor);
+    position: fixed;
+    width: 100%;
+    z-index: 2;
+    /* padding: 15px; */
+}
+
+.active{
+    background-color: #37A5C3;
+}

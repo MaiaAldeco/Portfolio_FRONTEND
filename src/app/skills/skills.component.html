@@ -1,0 +1,137 @@
+<app-navbar></app-navbar>
+<section id="skills"  [ngsReveal]="config1reveal">
+    <div class="space mt-md-4 py-5">
+        <h1 class="heading">MIS <span>habilidades</span></h1>
+        <button *ngIf="isLogged && isAdmin" class="btn btn-md btn-outline-primary" (click)="open(content)">
+            <fa-icon [icon]="faUser" transform="shrink-0 left-4"></fa-icon>New Skill
+        </button>
+    </div>
+    <div class="container-fluid" *ngFor="let skill of skills">
+        <div class="row ">
+            <div class="col-md-12">
+                <h3 class="progress-title">{{skill.habilidad}}</h3>
+                <div class="icons">
+                    <fa-icon *ngIf="isLogged" (click)="openDetails(contentDetails, skill)" style="color:#0DCAF0; cursor:pointer"
+                    [icon]="faSearch" class="fa-lg fa-fw" transform="shrink-0 left-4"></fa-icon>
+                    <fa-icon *ngIf="isLogged && isAdmin" (click)="openEdit(contentEdit, skill)" style="color:#F5B907; cursor:pointer"
+                    [icon]="faPenToSquare" class="fa-lg fa-fw"></fa-icon>
+                    <fa-icon *ngIf="isLogged && isAdmin" (click)="openDelete(contentDelete, skill)" style="color:#C02E3C; cursor:pointer" [icon]="faTrash"
+                    transform="shrink-0 right-4" class="fa-lg"></fa-icon>
+                </div>
+                <div class="progress">
+                    <div class="progress-bar bg-success progress-bar-striped active progress-bar-animated" role="progressbar"
+                        [style.width]="barrs(skill.porcentaje)" aria-valuenow="10" aria-valuemin="0"
+                        aria-valuemax="100"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- ---------------------------------------- ADD NEW --------------------------------------------------- -->
+<ng-template #content let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Nueva Habilidad</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form #f="ngForm" (ngSubmit)="onSubmit(f)" novalidate>
+            <div class="form-group">
+                <label for="habilidad">Habilidad</label>
+                <div class="input-group">
+                    <input type="text" name="habilidad" id="habilidad" class="form-control" required ngModel>
+                </div>
+                <label for="porcentaje">Porcentaje</label>
+                <div class="input-group">
+                    <input type="number" id="porcentaje" name="porcentaje" class="form-control" required ngModel>
+                </div>
+            </div>
+            <div class="border text-center">
+                <button data-dismiss="modal" class="btnContent">Submit</button>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-danger" (click)="modal.close('Save click')">Close</button>
+    </div>
+</ng-template>
+<!-- ---------------------------------------- DETAILS --------------------------------------------------- -->
+<ng-template #contentDetails let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Ver Habilidad</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form>
+            <div class="form-group">
+                <label>Habilidad</label>
+                <div class="input-group">
+                    <input id="habi" name="habi" class="form-control" readonly>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Porcentaje</label>
+                <div class="input-group">
+                    <input id="porce" name="porce" class="form-control" readonly>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-danger" (click)="modal.close('Save click')">Close</button>
+    </div>
+</ng-template>
+<!-- ---------------------------------------- UPDATE --------------------------------------------------- -->
+<ng-template #contentEdit let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Actualizar Habilidad</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form [formGroup]="editForm" novalidate>
+            <div class="form-group">
+                <label for="nombre">Id</label>
+                <div class="input-group">
+                    <input type="text" formControlName="id" class="form-control" required readonly>
+                </div>
+                <label for="habilidad">Habilidad</label>
+                <div class="input-group">
+                    <input type="text" formControlName="habilidad" class="form-control" required>
+                </div>
+                <label for="porcentaje">Porcentaje</label>
+                <div class="input-group">
+                    <input type="text" formControlName="porcentaje" class="form-control" required>
+                </div>
+            </div>
+            <div class="border text-center">
+                <button (click)="onSave()" data-dismiss="modal" class="btnContent">Guardar</button>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-danger" (click)="modal.close('Save click')">Close</button>
+    </div>
+</ng-template>
+<!-- ---------------------------------------- DELETE --------------------------------------------------- -->
+<ng-template #contentDelete let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title">Eliminar Usuario</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <h2>Los datos no se podrán recuperar. Desea continuar?</h2>
+      <div class="border text-center"> 
+        <button (click)="onDelete()" data-dismiss="modal" class="btn btn-danger">Eliminar Usuario</button> 
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-dark" (click)="modal.close('Save click')">Close</button>
+    </div>
+  </ng-template>
