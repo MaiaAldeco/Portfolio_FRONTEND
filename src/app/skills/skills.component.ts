@@ -7,6 +7,7 @@ import { ToastrService } from 'ngx-toastr';
 import { faPenToSquare, faTrash, faUser, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { FormBuilder, FormGroup, NgForm } from '@angular/forms';
 import { TokenService } from '../service/token.service';
+import { PersonaServiceService } from '../service/persona-service.service';
 
 @Component({
   selector: 'app-skills',
@@ -25,7 +26,7 @@ export class SkillsComponent implements OnInit {
   deleteId: number;
   isAdmin = false;
   isLogged = false;
-
+  idPersona: number;
 
   barrs(numero: number) {
     return numero + "%";
@@ -34,6 +35,7 @@ export class SkillsComponent implements OnInit {
   constructor(private scrollreveal: ServiceScrollrevealService,
     private modalService: NgbModal,
     private skillService: SkillsServiceService,
+    private personaService: PersonaServiceService,
     private toastr: ToastrService,
     private tokenService: TokenService,
     private formBuilder: FormBuilder) { }
@@ -42,6 +44,9 @@ export class SkillsComponent implements OnInit {
 
   ngOnInit(): void {
     this.skillsLista();
+    this.personaService.id.subscribe(data =>{
+      this.idPersona = data;
+    })
     this.editForm = this.formBuilder.group({
       id: [''],
       habilidad: [''],
@@ -73,7 +78,7 @@ export class SkillsComponent implements OnInit {
 
   //new
   onSubmit(f: NgForm) {
-    this.skillService.save(f.value).subscribe({
+    this.skillService.create(this.idPersona,f.value).subscribe({
       next: (v) => {
         this.ngOnInit();
         this.toastr.success('Habilidad creada', 'OK', {

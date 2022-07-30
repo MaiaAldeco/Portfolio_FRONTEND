@@ -4,9 +4,11 @@ import { ServiceScrollrevealService } from '../service-scrollreveal.service';
 import { ProjectsServiceService } from '../service/projects-service.service';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
-import { faPenToSquare, faTrash, faUser, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import { faPenToSquare, faTrash, faUser, faMagnifyingGlass, faCamera } from '@fortawesome/free-solid-svg-icons';
 import { FormBuilder, FormGroup, NgForm } from '@angular/forms';
 import { TokenService } from '../service/token.service';
+import { PersonaServiceService } from '../service/persona-service.service';
+import { ImageProject } from '../models/imageProject';
 
 @Component({
   selector: 'app-projects',
@@ -17,35 +19,44 @@ export class ProjectsComponent implements OnInit {
   faPenToSquare = faPenToSquare;
   faTrash = faTrash;
   faUser = faUser;
+  faCamera = faCamera;
   faSearch = faMagnifyingGlass;
   trabajos: Projects[];
+  imagenes: ImageProject[];
   closeResult: string;
   editForm: FormGroup;
   deleteId: number;
   isLogged = false;
   isAdmin = false;
+  idPersona: number;
+
+  selectedFile: File;
+  imgURL: any;
 
   constructor(private scrollreveal: ServiceScrollrevealService,
     private modalService: NgbModal,
     private projectService: ProjectsServiceService,
     private toastr: ToastrService,
     private tokenService: TokenService,
+    private personaService: PersonaServiceService,
     private formBuilder: FormBuilder) { }
 
-  config1reveal = this.scrollreveal.config1reveal
+  config1reveal = this.scrollreveal.config1reveal;
+  URL = this.projectService.projectURL + 'getImage/';
 
   ngOnInit(): void {
     this.projectLista();
+    this.personaService.id.subscribe(data => {
+      this.idPersona = data;
+    })
     this.editForm = this.formBuilder.group({
       id: [''],
       titulo: [''],
       descripcion: [''],
       linkTrabajo: [''],
-      imagen: ['']
     });
-    //verifica que estemos loggeados
+
     this.isLogged = this.tokenService.isLogged();
-    //obtiene el rol
     this.isAdmin = this.tokenService.isAdmin();
   }
 
@@ -58,12 +69,16 @@ export class ProjectsComponent implements OnInit {
 
   //new
   onSubmit(f: NgForm) {
-    this.projectService.save(f.value).subscribe({
+    const uploadData = new FormData();
+    uploadData.append('imageFile', this.selectedFile);
+    uploadData.append('project', JSON.stringify(f.value))
+
+    this.projectService.create(this.idPersona, uploadData).subscribe({
       next: (v) => {
         this.ngOnInit();
         this.toastr.success('Proyecto creado', 'OK', {
           timeOut: 3000, positionClass: 'toast-top-center'
-        }); 
+        });
       },
       complete: () => this.modalService.dismissAll(),
       error: (e) => this.toastr.error(e.error.mensaje, 'FAIL', {
@@ -82,7 +97,6 @@ export class ProjectsComponent implements OnInit {
     document.getElementById('nameProyect').setAttribute('value', proyect.titulo);
     document.getElementById('descProyect').setAttribute('value', proyect.descripcion);
     document.getElementById('linkTrabajo').setAttribute('value', proyect.linkTrabajo);
-    document.getElementById('imagen').setAttribute('value', proyect.imagen);
   }
 
   //vista edit
@@ -97,18 +111,21 @@ export class ProjectsComponent implements OnInit {
       titulo: project.titulo,
       descripcion: project.descripcion,
       linkTrabajo: project.linkTrabajo,
-      imagen:project.imagen
+      imagen: project.bytePic
     });
   }
 
   //update
   onSave() {
-    this.projectService.update(this.editForm.value.id, this.editForm.value).subscribe({
+    const uploadData = new FormData();
+    uploadData.append('project', JSON.stringify(this.editForm.value))
+
+    this.projectService.update(this.editForm.value.id, uploadData).subscribe({
       next: (v) => {
         this.ngOnInit();
         this.toastr.success('Proyecto actualizado', 'OK', {
           timeOut: 3000, positionClass: 'toast-top-center'
-        }); 
+        });
       },
       complete: () => this.modalService.dismissAll(),
       error: (e) => this.toastr.error(e.error.mensaje, 'FAIL', {
@@ -133,6 +150,30 @@ export class ProjectsComponent implements OnInit {
         this.ngOnInit();
         this.modalService.dismissAll();
       });
+  }
+
+  //image
+  public onFileChanged(event) {
+    this.selectedFile = event.target.files[0];
+  }
+
+  onSaveProfilePic() {
+    const uploadData = new FormData();
+    uploadData.append('imageFile', this.selectedFile);
+
+    this.projectService.updateImg(this.editForm.value.id, uploadData).subscribe({
+      next: (v) => {
+        this.ngOnInit();
+        this.toastr.success('Proyecto actualizado', 'OK', {
+          timeOut: 3000, positionClass: 'toast-top-center'
+        });
+      },
+      complete: () => this.modalService.dismissAll(),
+      error: (e) => this.toastr.error(e.error.mensaje, 'FAIL', {
+        timeOut: 3000, positionClass: 'toast-top-center'
+      })
+
+    })
   }
 
   //modal

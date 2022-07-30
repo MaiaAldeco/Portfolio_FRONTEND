@@ -9,6 +9,7 @@ import { ExperienceServiceService } from '../service/experience-service.service'
 import { ToastrService } from 'ngx-toastr';
 import { FormBuilder, FormGroup, NgForm } from '@angular/forms';
 import { TokenService } from '../service/token.service';
+import { PersonaServiceService } from '../service/persona-service.service';
 
 @Component({
   selector: 'app-experience',
@@ -17,6 +18,8 @@ import { TokenService } from '../service/token.service';
 })
 export class ExperienceComponent implements OnInit {
 
+  isAdmin = false;
+  isLogged = false;
   faPenToSquare = faPenToSquare;
   faTrash = faTrash;
   faSearch = faMagnifyingGlass;
@@ -28,13 +31,14 @@ export class ExperienceComponent implements OnInit {
   editFormExp: FormGroup;
   deleteExpId: number;
   deleteStudyId: number;
-  isAdmin = false;
-  isLogged = false;
+  idPersona:number;
+
 
   constructor(private scrollreveal: ServiceScrollrevealService,
     private modalService: NgbModal,
     private expService: ExperienceServiceService,
     private estudioService: EducationServiceService,
+    private personaService: PersonaServiceService,
     private tokenService: TokenService,
     private toastr: ToastrService,
     private formBuilder: FormBuilder) { }
@@ -42,6 +46,9 @@ export class ExperienceComponent implements OnInit {
   config1reveal = this.scrollreveal.config1reveal
 
   ngOnInit(): void {
+    this.personaService.id.subscribe(data =>{
+      this.idPersona = data;
+    })
     this.expLista();
     this.estudioLista();
     this.editFormStudy = this.formBuilder.group({
@@ -90,7 +97,7 @@ export class ExperienceComponent implements OnInit {
 
 
   onSubmitExperiencia(f: NgForm) {
-    this.expService.save(f.value).subscribe({
+    this.expService.create(this.idPersona, f.value).subscribe({
       next: (v) => {
         this.ngOnInit();
         this.toastr.success('Experiencia creada', 'OK', {
@@ -209,7 +216,7 @@ export class ExperienceComponent implements OnInit {
   }
 
   onSubmitEstudio(f: NgForm) {
-    this.estudioService.save(f.value).subscribe({
+    this.estudioService.create(this.idPersona, f.value).subscribe({
       next: (v) => {
         this.ngOnInit();
         this.toastr.success('Estudio creado', 'OK', {

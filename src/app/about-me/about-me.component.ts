@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { ServiceScrollrevealService } from '../service-scrollreveal.service';
-import { faPenToSquare, faTrash, faUser, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import { faPenToSquare, faTrash, faUser, faMagnifyingGlass, faCamera } from '@fortawesome/free-solid-svg-icons';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { PersonaServiceService } from '../service/persona-service.service';
 import { ToastrService } from 'ngx-toastr';
 import { Persona } from '../models/persona';
 import { FormBuilder, FormGroup, NgForm } from '@angular/forms';
 import { TokenService } from '../service/token.service';
-import { identifierModuleUrl } from '@angular/compiler';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-about-me',
@@ -20,24 +20,34 @@ export class AboutMeComponent implements OnInit {
   faTrash = faTrash;
   faUser = faUser;
   faSearch = faMagnifyingGlass;
+  faCamera = faCamera;
   closeResult: string;
   personas: Persona[];
+  exists: boolean;
   editForm: FormGroup;
+  editFormProfile: FormGroup;
+  editProfile: FormGroup;
   deleteId: number;
   isLogged = false;
   authority: string;
   isAdmin = false;
-  mensaje:string;
-  errorMsj:string;
+  mensaje: string;
+
+
+  selectedFile: File;
+  imgURL: any;
 
 
   constructor(private scrollreveal: ServiceScrollrevealService,
     private modalService: NgbModal,
+    private httpClient: HttpClient,
     private personaService: PersonaServiceService,
     private toastr: ToastrService,
     private tokenService: TokenService,
     private formBuilder: FormBuilder) {
   }
+
+  URL = this.personaService.personaURL + 'getImage/'
 
   config1reveal = this.scrollreveal.config1reveal
 
@@ -61,7 +71,16 @@ export class AboutMeComponent implements OnInit {
   //lista
   personaLista(): void {
     this.personaService.lista().subscribe({
-      next: (data) => this.personas = data, error: (e) => console.log(e)
+      next: (data) => { this.personas = data; 
+        for (let i of data){
+           this.personaService.id.emit(i.id) 
+           console.log(this.personas.length===0)
+          } 
+          if(this.personas.length===0){
+            this.exists=true;
+          } else this.exists=false
+        },
+      error: (e) => console.log(e)
     })
   };
 
@@ -97,14 +116,18 @@ export class AboutMeComponent implements OnInit {
     });
   }
 
+
   //update
   onSave() {
-    this.personaService.update(this.editForm.value.id, this.editForm.value).subscribe({
+    const uploadData = new FormData();
+    uploadData.append('persona', JSON.stringify(this.editForm.value))
+
+    this.personaService.update(this.editForm.value.id, uploadData).subscribe({
       next: (v) => {
         this.ngOnInit();
         this.toastr.success('Persona actualizada', 'OK', {
           timeOut: 3000, positionClass: 'toast-top-center'
-        }); 
+        });
       },
       complete: () => this.modalService.dismissAll(),
       error: (e) => this.toastr.error(e.error.mensaje, 'FAIL', {
@@ -116,18 +139,24 @@ export class AboutMeComponent implements OnInit {
 
   //new
   onSubmit(f: NgForm) {
-    this.personaService.save(f.value).subscribe({
+    const uploadData = new FormData();
+    uploadData.append('imageFile', this.selectedFile);
+    uploadData.append('persona', JSON.stringify(f.value))
+
+    this.personaService.save(uploadData).subscribe({
       next: (v) => {
-        this.ngOnInit(),
-        this.toastr.success('Persona creada', 'OK', {
-          timeOut: 3000, positionClass: 'toast-top-center'
-        }); 
+          this.toastr.success('Persona creada', 'OK', {
+            timeOut: 3000, positionClass: 'toast-top-center'
+          });
       },
-      complete: () => this.modalService.dismissAll(),
-      error: (e) => { this.toastr.error(e.error.mensaje, 'FAIL', {
-        timeOut: 3000, positionClass: 'toast-top-center'
-      })
-    }})
+      complete: () =>{ this.modalService.dismissAll();  this.ngOnInit();
+      },
+      error: (e) => {
+        this.toastr.error(e.error.mensaje, 'FAIL', {
+          timeOut: 3000, positionClass: 'toast-top-center'
+        })
+      }
+    })
   }
 
   //vista delete
@@ -146,12 +175,36 @@ export class AboutMeComponent implements OnInit {
         this.ngOnInit();
         this.toastr.success('Persona creada', 'OK', {
           timeOut: 3000, positionClass: 'toast-top-center'
-        }); 
+        });
       },
       complete: () => this.modalService.dismissAll(),
       error: (e) => this.toastr.error(e.error.mensaje, 'FAIL', {
         timeOut: 3000, positionClass: 'toast-top-center'
       })
+    })
+  }
+
+  //image profile
+  public onFileChanged(event) {
+    this.selectedFile = event.target.files[0];
+  }
+
+  //update image
+  onSaveProfilePic() {
+    const uploadData2 = new FormData();
+    uploadData2.append('imageFile', this.selectedFile);
+    this.personaService.updateImg(this.editForm.value.id, uploadData2).subscribe({
+      next: (v) => {
+        this.ngOnInit();
+        this.toastr.success('Persona actualizada', 'OK', {
+          timeOut: 3000, positionClass: 'toast-top-center'
+        });
+      },
+      complete: () => this.modalService.dismissAll(),
+      error: (e) => this.toastr.error(e.error.mensaje, 'FAIL', {
+        timeOut: 3000, positionClass: 'toast-top-center'
+      })
+
     })
   }
 

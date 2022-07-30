@@ -2,26 +2,36 @@
 <section class="menu" id="projects" [ngsReveal]="config1reveal">
     <h1 class="heading mt-md-4 py-5"> <span>trabajos</span> realizados </h1>
     <button *ngIf="isLogged && isAdmin" class="btn btn-md btn-outline-primary" (click)="open(content)">
-        <fa-icon [icon]="faUser" transform="shrink-0 left-4"></fa-icon>New Skill
+        <fa-icon [icon]="faUser" transform="shrink-0 left-4"></fa-icon>New Project
     </button>
     <div class="box-container ">
-        <div class="row  row-cols-1 row-cols-md-3 g-4 ">
+        <div class="row  row-cols-1 row-cols-md-3 g-4">
             <div class="col  " *ngFor="let trabajo of trabajos">
-                <div class="card ">
-                    <img src="{{trabajo.imagen}}" class="card-img-top img-fluid " alt="...">
+                <!-- ../assets/project.jpg -->
+                <div class="card profilepic">
+                    <img src="{{this.URL+trabajo.id}}"
+                        class="card-img-top img-fluid profilepic__image" alt="imagen de proyecto">
+                    <div class="profilepic__content">
+                        <span *ngIf="isLogged && isAdmin" class="profilepic__icon" (click)="openEdit(contentProfile, trabajo)">
+                            <fa-icon [icon]="faCamera" class="fas"></fa-icon>
+                        </span>
+                        <span *ngIf="isLogged && isAdmin" class="profilepic__text">Edit Image</span>
+                    </div>
                 </div>
                 <div class="card-body box">
                     <div class="icons">
-                        <fa-icon *ngIf="isLogged" (click)="openDetails(contentDetails, trabajo)" style="color:#0DCAF0; cursor:pointer"
-                        [icon]="faSearch" class="fa-sm fa-fw" transform="shrink-0 left-4"></fa-icon>
-                        <fa-icon *ngIf="isLogged && isAdmin" (click)="openEdit(contentEdit, trabajo)" style="color:#F5B907; cursor:pointer"
-                        [icon]="faPenToSquare" class="fa-sm fa-fw"></fa-icon>
-                        <fa-icon *ngIf="isLogged && isAdmin" (click)="openDelete(contentDelete, trabajo)" style="color:#C02E3C; cursor:pointer" [icon]="faTrash"
-                        transform="shrink-0 right-4" class="fa-sm"></fa-icon>
+                        <fa-icon *ngIf="isLogged" (click)="openDetails(contentDetails, trabajo)"
+                            style="color:#0DCAF0; cursor:pointer" [icon]="faSearch" class="fa-sm fa-fw"
+                            transform="shrink-0 left-4"></fa-icon>
+                        <fa-icon *ngIf="isLogged && isAdmin" (click)="openEdit(contentEdit, trabajo)"
+                            style="color:#F5B907; cursor:pointer" [icon]="faPenToSquare" class="fa-sm fa-fw"></fa-icon>
+                        <fa-icon *ngIf="isLogged && isAdmin" (click)="openDelete(contentDelete, trabajo)"
+                            style="color:#C02E3C; cursor:pointer" [icon]="faTrash" transform="shrink-0 right-4"
+                            class="fa-sm"></fa-icon>
                     </div>
                     <h5 class="card-title">{{trabajo.titulo}}</h5>
                     <p class="card-text">{{trabajo.descripcion}}?</p>
-                    <a href="{{trabajo.linkTrabajo}}" class="btnContent">View</a>
+                    <a href="{{trabajo.linkTrabajo}}" target="_blank" class="btnContent">View</a>
                 </div>
             </div>
         </div>
@@ -38,7 +48,7 @@
     <div class="modal-body">
         <form #f="ngForm" (ngSubmit)="onSubmit(f)" novalidate>
             <div class="form-group">
-                <label for="titulo">Nombre</label>
+                <label for="titulo">Titulo</label>
                 <div class="input-group">
                     <input id="titulo" name="titulo" class="form-control" required ngModel>
                 </div>
@@ -50,9 +60,10 @@
                 <div class="input-group">
                     <input id="linkTrabajo" name="linkTrabajo" class="form-control" required ngModel>
                 </div>
-                <label for="imagen">Imagen</label>
+                <label>Imagen</label>
                 <div class="input-group">
-                    <input id="imagen" name="imagen" class="form-control" required ngModel>
+                    <input type="file" name="file" (change)="onFileChanged($event)">
+                    <img [src]="imgURL" height="200" *ngIf="imgURL">
                 </div>
             </div>
             <div class="border text-center">
@@ -92,10 +103,6 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label>Imagen</label>
-                    <div class="input-group">
-                        <input id="imagen" name="imagen" class="form-control" readonly>
-                    </div>
                 </div>
             </div>
         </form>
@@ -131,12 +138,8 @@
                 <div class="input-group">
                     <input type="text" formControlName="linkTrabajo" class="form-control" required>
                 </div>
-                <label for="imagen">Imagen</label>
-                <div class="input-group">
-                    <input type="text" formControlName="imagen" class="form-control" required>
-                </div>
             </div>
-            
+
             <div class="border text-center">
                 <button (click)="onSave()" data-dismiss="modal" class="btnContent">Guardar</button>
             </div>
@@ -149,18 +152,48 @@
 <!-- ---------------------------------------- DELETE --------------------------------------------------- -->
 <ng-template #contentDelete let-modal>
     <div class="modal-header">
-      <h4 class="modal-title">Eliminar Usuario</h4>
-      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
-        <span aria-hidden="true">&times;</span>
-      </button>
+        <h4 class="modal-title">Eliminar Proyecto</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
     </div>
     <div class="modal-body">
-      <h2>Los datos no se podrán recuperar. Desea continuar?</h2>
-      <div class="border text-center"> 
-        <button (click)="onDelete()" data-dismiss="modal" class="btn btn-danger">Eliminar Usuario</button> 
-      </div>
+        <h2>Los datos no se podrán recuperar. Desea continuar?</h2>
+        <div class="border text-center">
+            <button (click)="onDelete()" data-dismiss="modal" class="btn btn-danger">Eliminar Usuario</button>
+        </div>
     </div>
     <div class="modal-footer">
-      <button type="button" class="btn btn-dark" (click)="modal.close('Save click')">Close</button>
+        <button type="button" class="btn btn-dark" (click)="modal.close('Save click')">Close</button>
     </div>
-  </ng-template>
+</ng-template>
+<!-- ---------------------------------------- IMAGE UPDATE -------------------------------------------- -->
+<ng-template #contentProfile let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Profile Picture</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form [formGroup]="editForm">
+            <div class="form-group">
+                <label for="id">Id</label>
+                <div class="input-group">
+                    <input type="text" formControlName="id" class="form-control" required readonly>
+                </div>
+                <label>Imagen</label>
+                <div class="input-group">
+                    <input type="file" (change)="onFileChanged($event)">
+                    <img [src]="imgURL" height="200" *ngIf="imgURL">
+                </div>
+            </div>
+            <div class="border text-center">
+                <button (click)="onSaveProfilePic()" data-dismiss="modal" class="btnContent">Guardar</button>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-danger" (click)="modal.close('Save click')">Close</button>
+    </div>
+</ng-template>

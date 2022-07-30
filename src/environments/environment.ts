@@ -10,7 +10,9 @@ export const environment = {
   personaURL: 'http://localhost:8080/persona/',
   projectURL: 'http://localhost:8080/trabajo/',
   skillsURL: 'http://localhost:8080/skill/',
-  authURL: 'http://localhost:8080/auth/'
+  authURL: 'http://localhost:8080/auth/',
+  imageURL: 'http://localhost:8080/image/',
+  imageProjectURL: 'http://localhost:8080/project/img/'
 };
 
 /*

@@ -10,8 +10,8 @@ import { ProjectsComponent } from './projects/projects.component';
 import { SkillsComponent } from './skills/skills.component';
 
 const routes: Routes=[
-  {path: '', component: MenuComponent},
-  {path:'login', component:LoginComponent},
+  {path: '', component: LoginComponent},
+  {path:'home', component:MenuComponent},
   {path:'registro', component: RegistroComponent},
   {path:'about', component:AboutMeComponent},
   {path:'experience', component:ExperienceComponent},

@@ -33,7 +33,7 @@ export class LoginComponent implements OnInit {
         this.toastr.success(this.errorMsj, 'Bienvenido ' + this.tokenService.getUsername(), {
           timeOut: 3000, positionClass: 'toast-top-center'
         })
-        this.router.navigate(['/']);
+        this.router.navigate(['/home']);
       },
       error: (e) => {
         console.log(e)

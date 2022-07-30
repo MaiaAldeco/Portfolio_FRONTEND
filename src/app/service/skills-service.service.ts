@@ -29,10 +29,6 @@ export class SkillsServiceService {
   public getAllHabilidadesByPersona(id: number): Observable<Skills> {
     return this.httpClient.get<Skills>(this.skillsURL + `persona/${id}`)
   }
-  //crear habilidad
-  public save(skill: Skills): Observable<any> {
-    return this.httpClient.post<Skills>(this.skillsURL + 'create', skill); //si no enviara nada en el request body iria {} vacías
-  }
   //crear habilidad con id persona
   public create(id: number, trabajo: Skills): Observable<any> {
     return this.httpClient.post<Skills>(this.skillsURL + `create/${id}`, trabajo)

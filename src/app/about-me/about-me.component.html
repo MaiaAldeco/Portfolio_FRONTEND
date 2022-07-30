@@ -1,6 +1,6 @@
 <app-navbar></app-navbar>
 <section class="home" id="home" ngsReveal>
-    <div class="content" *ngFor="let persona of personas">
+    <div class="content" *ngFor="let persona of personas" >
         <ngx-typed-js stringsElement=persona.tecnologia [shuffle]="false" [typeSpeed]="10" [startDelay]="1000" [backSpeed]="200"
             [smartBackspace]="true" [backDelay]="40" [loop]="true" [showCursor]="false">
             <h3>{{persona.nombre}} {{persona.apellido}} <br> {{persona.stack}} <span
@@ -19,15 +19,19 @@
     </div>
 </section>
 
-<section class="custom-section space " id="about" [ngsReveal]="config1reveal">
-    <button *ngIf="isLogged && isAdmin" class="btn btn-md btn-outline-primary" (click)="open(content)">
+<section class="custom-section space " id="about" [ngsReveal]="config1reveal" >
+    <button *ngIf="isAdmin && this.exists" class="btn btn-md btn-outline-primary" (click)="open(content)">
         <fa-icon [icon]="faUser" transform="shrink-0 left-4"></fa-icon>New User
     </button>
     <h1 class="heading"> <span>SOBRE</span> MI </h1>
     
     <div class="row">
-        <div class="profile-pic ">
-            <img class="img-fluid rounded-circle shadow-sm" src="../../assets/yo.jpg" alt="">
+        <div class="profilepic" *ngFor="let persona of personas">
+            <img class="img-fluid rounded-circle shadow-sm profilepic__image" src="{{this.URL+persona.id}}" alt="imagen de perfil">
+            <div class="profilepic__content">
+                <span *ngIf="isLogged && isAdmin" class="profilepic__icon" (click)="openEdit(contentProfile, persona)" ><fa-icon [icon]="faCamera" class="fas"></fa-icon></span>
+                <span *ngIf="isLogged && isAdmin" class="profilepic__text">Edit Profile</span>
+              </div>
         </div>
         <div class="cb">
             <div class="card-body" *ngFor="let persona of personas">
@@ -67,7 +71,8 @@
                 </div>
                 <label for="descripcion">Descripción</label>
                 <div class="input-group">
-                    <input type="text" id="descripcion" name="descripcion" class="form-control" required ngModel>
+                    <textarea name="descripcion" id="descripcion" cols="30" rows="3" class="form-control" required ngModel></textarea>
+                  <!--   <input type="text" id="descripcion" name="descripcion" class="form-control" required ngModel> -->
                 </div>
                 <label for="localidad">Localidad</label>
                 <div class="input-group">
@@ -80,6 +85,11 @@
                 <label for="email">Email</label>
                 <div class="input-group">
                     <input type="text" id="email" name="email" class="form-control" required ngModel>
+                </div>
+                <label>Imagen</label>
+                <div class="input-group">
+                    <input type="file" name="file" (change)="onFileChanged($event)">
+                    <img [src]="imgURL" height="200" *ngIf="imgURL">
                 </div>
             </div>
             <div class="border text-center">
@@ -170,7 +180,7 @@
                 </div>
                 <label for="descripcion">Descripción</label>
                 <div class="input-group">
-                    <input type="text" formControlName="descripcion" class="form-control" required>
+                    <textarea cols="30" rows="3"  class="form-control" formControlName="descripcion"></textarea>
                 </div>
             </div>
             <div class="border text-center">
@@ -198,5 +208,35 @@
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-dark" (click)="modal.close('Save click')">Close</button>
+    </div>
+</ng-template>
+<!-- ---------------------------------------- PROFILE PICTURE -------------------------------------------- -->
+<ng-template #contentProfile let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Profile Picture</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form [formGroup]="editForm">
+            <div class="form-group">
+                <label for="id">Id</label>
+                <div class="input-group">
+                    <input type="text" formControlName="id" class="form-control" required readonly>
+                </div>
+                <label>Imagen</label>
+                <div class="input-group">
+                    <input type="file" (change)="onFileChanged($event)">
+                    <img [src]="imgURL" height="200" *ngIf="imgURL">
+                </div>
+            </div>
+            <div class="border text-center">
+                <button (click)="onSaveProfilePic()" data-dismiss="modal" class="btnContent">Guardar</button>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-danger" (click)="modal.close('Save click')">Close</button>
     </div>
 </ng-template>

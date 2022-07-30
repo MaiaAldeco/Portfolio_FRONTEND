@@ -6,12 +6,14 @@ export class Projects {
     public titulo:string;
     public descripcion:string;
     public linkTrabajo:string;
-    public imagen:string;
     public persona:Persona;
+    public bytePic:File;
 
-    constructor(titulo:string, descripcion:string, persona:Persona){
+    constructor(titulo:string, descripcion:string, linkTrabajo:string, persona:Persona, bytePic:File){
         this.titulo = titulo;
         this.descripcion = descripcion;
+        this.linkTrabajo = linkTrabajo;
         this.persona = persona;
+        this.bytePic = bytePic;
     }
 }
