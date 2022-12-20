@@ -4,15 +4,15 @@
 
 export const environment = {
   production: false,
-  contactURL: 'http://localhost:8080/contacto/',
-  educationURL: 'http://localhost:8080/estudio/',
-  experienciaURL: 'http://localhost:8080/experiencia/',
-  personaURL: 'http://localhost:8080/persona/',
-  projectURL: 'http://localhost:8080/trabajo/',
-  skillsURL: 'http://localhost:8080/skill/',
-  authURL: 'http://localhost:8080/auth/',
-  imageURL: 'http://localhost:8080/image/',
-  imageProjectURL: 'http://localhost:8080/project/img/'
+  contactURL: 'https://springboot-backend-argpro.azurewebsites.net/contacto/',
+  educationURL: 'https://springboot-backend-argpro.azurewebsites.net/estudio/',
+  experienciaURL: 'https://springboot-backend-argpro.azurewebsites.net/experiencia/',
+  personaURL: 'https://springboot-backend-argpro.azurewebsites.net/persona/',
+  projectURL: 'https://springboot-backend-argpro.azurewebsites.net/trabajo/',
+  skillsURL: 'https://springboot-backend-argpro.azurewebsites.net/skill/',
+  authURL: 'https://springboot-backend-argpro.azurewebsites.net/auth/',
+  imageURL: 'https://springboot-backend-argpro.azurewebsites.net/image/',
+  imageProjectURL: 'https://springboot-backend-argpro.azurewebsites.net/project/img/'
 };
 
 /*
